@@ -1,23 +1,40 @@
 # app.py (Streamlit)
 import streamlit as st
 import joblib
-import numpy as np
+import pandas as pd
 
-
-# Cargar el modelo
+# Cargar el modelo entrenado
 model = joblib.load("best_model.pkl")
 
-# Título de la app
-st.title("Clasificador de Arroz")
+# Título de la aplicación
+st.title("Clasificador de Arroz (Cammeo vs Osmancik)")
+
+# Descripción del dataset
+st.write("""
+Este clasificador predice si un grano de arroz pertenece a la clase **Cammeo** u **Osmancik** 
+basándose en sus características físicas.
+""")
 
 # Entrada de datos
-st.write("Ingrese los valores de las características:")
-feature_values = []
-for i in range(X_train.shape[1]):
-    value = st.number_input(f"Característica {i+1}", value=0.0)
-    feature_values.append(value)
+st.subheader("Ingrese las características del grano de arroz:")
+feature_names = [
+    "Area", "Perimeter", "MajorAxisLength", "MinorAxisLength",
+    "AspectRation", "Eccentricity", "ConvexArea", "Extent", "Compactness"
+]
 
-# Predecir
+# Crear campos de entrada para cada característica
+input_data = {}
+for feature in feature_names:
+    input_data[feature] = st.number_input(f"{feature}", value=0.0)
+
+# Botón de predicción
 if st.button("Predecir"):
-    prediction = model.predict([feature_values])
-    st.write(f"Clase predicha: {prediction[0]}")
+    # Convertir los datos ingresados en un DataFrame
+    input_df = pd.DataFrame([input_data])
+
+    # Realizar la predicción
+    prediction = model.predict(input_df)
+
+    # Mostrar el resultado
+    st.subheader("Resultado de la Predicción:")
+    st.write(f"La clase predicha es: **{prediction[0]}**")
