@@ -1,43 +1,23 @@
+# app.py (Streamlit)
 import streamlit as st
 import joblib
-import pandas as pd
+import numpy as np
 
-# Load the trained model
-model = joblib.load("model.pkl")
 
-# Define the prediction function
-def predict(input_data):
-    prediction = model.predict(pd.DataFrame([input_data]))
-    return prediction[0]
+# Cargar el modelo
+model = joblib.load("best_model.pkl")
 
-# Create the Streamlit app
-st.title("California Housing Price Prediction")
+# Título de la app
+st.title("Clasificador de Arroz")
 
-# Input form
-longitude = st.number_input("Longitude", value=-122.23)
-latitude = st.number_input("Latitude", value=37.88)
-housing_median_age = st.number_input("Housing Median Age", value=41.0)
-total_rooms = st.number_input("Total Rooms", value=880.0)
-total_bedrooms = st.number_input("Total Bedrooms", value=129.0)
-population = st.number_input("Population", value=322.0)
-households = st.number_input("Households", value=126.0)
-median_income = st.number_input("Median Income", value=8.3252)
-ocean_proximity = st.selectbox("Ocean Proximity", ["<1H OCEAN", "INLAND", "ISLAND", "NEAR BAY", "NEAR OCEAN"])
+# Entrada de datos
+st.write("Ingrese los valores de las características:")
+feature_values = []
+for i in range(X_train.shape[1]):
+    value = st.number_input(f"Característica {i+1}", value=0.0)
+    feature_values.append(value)
 
-# Create input data dictionary
-input_data = {
-    "longitude": longitude,
-    "latitude": latitude,
-    "housing_median_age": housing_median_age,
-    "total_rooms": total_rooms,
-    "total_bedrooms": total_bedrooms,
-    "population": population,
-    "households": households,
-    "median_income": median_income,
-    "ocean_proximity": ocean_proximity,
-}
-
-# Make prediction when button is clicked
-if st.button("Predict"):
-    prediction = predict(input_data)
-    st.success(f"Predicted Median House Value: ${prediction:,.2f}")
+# Predecir
+if st.button("Predecir"):
+    prediction = model.predict([feature_values])
+    st.write(f"Clase predicha: {prediction[0]}")
