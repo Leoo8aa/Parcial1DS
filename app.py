@@ -17,9 +17,10 @@ basándose en sus características físicas.
 
 # Entrada de datos
 st.subheader("Ingrese las características del grano de arroz:")
+# Cambiar los nombres de las características en app.py
 feature_names = [
-    "Area", "Perimeter", "MajorAxisLength", "MinorAxisLength",
-    "AspectRation", "Eccentricity", "ConvexArea", "Extent", "Compactness"
+    "Area", "Perimeter", "Major_Axis_Length", "Minor_Axis_Length",
+    "Aspect_Ratio", "Eccentricity", "Convex_Area", "Extent", "Compactness"
 ]
 
 # Crear campos de entrada para cada característica
